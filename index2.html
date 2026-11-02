@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jadwal Sekolah Pro | Naufal Rusyda</title>
+<meta name="description" content="Pembahasan mendalam Jadwal Sekolah Pro: aplikasi web jadwal pelajaran kelas XI TKJ 2 SMK Negeri 2 Sragen karya Naufal Rusyda.">
+<meta name="theme-color" content="#fbf7f0">
+<meta name="author" content="Naufal Rusyda">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Jadwal Sekolah Pro | Naufal Rusyda">
+<meta property="og:description" content="Aplikasi web jadwal pelajaran dengan kalender akademik dan maskot, dibahas dari fitur sampai cara kerjanya.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c4884a'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' font-style='italic' text-anchor='middle' fill='%232b1d10'%3EN%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf7f0; --card: #fffdf9; --soft: #f4ece0; --line: rgba(60,45,30,.12);
+    --text: #2b2520; --body: #4a4036; --muted: #6b5f52; --accent: #c4884a; --ink: #8f5d2b;
+    --serif: "Playfair Display", Georgia, serif; --sans: "Outfit", "Helvetica Neue", Arial, sans-serif;
+    --r: 20px; --gap: 6rem;
+    --shadow: 0 1px 2px rgba(60,45,30,.04), 0 10px 28px -14px rgba(60,45,30,.14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body { background: var(--bg); color: var(--body); font-family: var(--sans); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { display: block; width: 100%; height: auto; }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .wrap { width: min(1080px, 100% - 3rem); margin-inline: auto; }
+  h1, h2, h3 { font-family: var(--serif); color: var(--text); font-weight: 600; line-height: 1.1; letter-spacing: -.01em; }
+  h2 { font-size: clamp(2.2rem, 4vw, 3rem); }
+  h3 { font-size: 1.35rem; }
+  em { color: var(--ink); font-style: italic; }
+  .kicker { margin-bottom: .6rem; font-size: .9rem; font-weight: 600; color: var(--ink); }
+
+  /* Header */
+  .top { position: sticky; top: 0; z-index: 40; background: rgba(251,247,240,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .top .wrap { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+  .logo { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.4rem; color: var(--ink); }
+  .pill-nav { display: flex; gap: .25rem; }
+  .pill-nav a { padding: .45rem .9rem; border-radius: 999px; font-weight: 500; font-size: .95rem; transition: background .2s, color .2s; }
+  .pill-nav a:hover { background: var(--soft); }
+  .pill-nav a.active { background: var(--soft); color: var(--text); font-weight: 600; }
+
+  /* Hero */
+  .hero { padding: clamp(3.5rem, 7vw, 6rem) 0 var(--gap); }
+  .hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .eyebrow { font-weight: 600; font-size: .95rem; color: var(--ink); animation: fade .8s ease both; }
+  .hero h1 { margin-top: 1rem; font-size: clamp(3.2rem, 7.5vw, 5.6rem); font-weight: 500; line-height: 1; letter-spacing: -.02em; animation: fade .9s ease .1s both; }
+  .hero h1 span { display: block; }
+  .hero .sub { margin-top: 1.4rem; max-width: 36ch; font-size: 1.15rem; line-height: 1.65; animation: fade .9s ease .25s both; }
+  .cta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: .75rem; animation: fade .9s ease .4s both; }
+  .btn { display: inline-block; padding: .85rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: .95rem; border: 1px solid transparent; transition: transform .2s, background .2s, border-color .2s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.primary { background: var(--accent); color: #2b1d10; }
+  .btn.primary:hover { background: #cf9558; }
+  .btn.ghost { background: transparent; border-color: var(--line); color: var(--text); }
+  .btn.ghost:hover { border-color: var(--ink); }
+
+  /* Frame HP di hero */
+  .photo-wrap { position: relative; isolation: isolate; width: min(100%, 300px); margin-inline: auto; }
+  .photo-wrap::before { content: ""; position: absolute; inset: 14px -14px -14px 14px; border: 1px solid var(--accent); border-radius: 40px; }
+  .glow { position: absolute; z-index: -1; inset: -8% -30% -8% -26%; background: radial-gradient(circle at 72% 28%, rgba(196,136,74,.42), transparent 58%), radial-gradient(circle at 20% 85%, rgba(196,136,74,.2), transparent 55%); filter: blur(30px); pointer-events: none; }
+  .dots { position: absolute; z-index: 0; top: -24px; right: -38px; width: 112px; height: 112px; background-image: radial-gradient(var(--accent) 1.6px, transparent 1.7px); background-size: 14px 14px; opacity: .65; pointer-events: none; }
+  .phone { position: relative; z-index: 1; border-radius: 34px; padding: 8px; background: #e9dcc4; box-shadow: 0 30px 60px -30px rgba(110,75,35,.45); animation: fade 1s ease .2s both; }
+  .phone .shot { border-radius: 27px; background: #e9dcc4; }
+  @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .marquee { border-block: 1px solid var(--line); padding: 1rem 0; }
+  .marquee .wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.6rem; font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--muted); }
+  .marquee span + span::before { content: ""; display: inline-block; width: 4px; height: 4px; margin-right: 1.6rem; vertical-align: middle; border-radius: 50%; background: var(--accent); }
+
+  /* Section */
+  section.sec { padding: var(--gap) 0 0; }
+  .sec-head { margin-bottom: 2.5rem; }
+  .sec-head p:not(.kicker) { margin-top: .6rem; max-width: 52ch; color: var(--muted); }
+
+  /* Ringkasan */
+  .about { display: grid; grid-template-columns: 1.3fr .7fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  .lead { font-family: var(--serif); font-weight: 500; color: var(--text); font-size: clamp(1.5rem, 2.4vw, 1.9rem); line-height: 1.35; max-width: 28ch; }
+  .rest { margin-top: 1rem; max-width: 58ch; }
+  .data { padding: 1.5rem 1.6rem; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+  .data dl { margin-top: .6rem; }
+  .data dl div { padding: .8rem 0; border-bottom: 1px solid var(--line); }
+  .data dl div:last-child { border-bottom: 0; padding-bottom: 0; }
+  .data dt { font-size: .85rem; color: var(--muted); }
+  .data dd { font-weight: 600; color: var(--text); line-height: 1.45; }
+
+  /* Fitur */
+  .feats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+  .feat { padding: 1.6rem; border-radius: var(--r); background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .feat.wide { grid-column: 1 / -1; }
+  .feat p { margin-top: .6rem; font-size: .96rem; line-height: 1.65; }
+  .chips { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .chips span { padding: .2rem .7rem; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); color: var(--text); font-size: .82rem; font-weight: 500; }
+
+  /* Cara kerja */
+  .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; list-style: none; counter-reset: s; }
+  .flow li { counter-increment: s; padding: 1.4rem; border-radius: var(--r); background: var(--soft); border: 1px solid var(--line); }
+  .flow li::before { content: counter(s); display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: .8rem; border-radius: 50%; background: var(--accent); color: #2b1d10; font-weight: 700; font-size: .95rem; }
+  .flow b { display: block; color: var(--text); font-weight: 600; }
+  .flow small { display: block; margin-top: .3rem; font-size: .93rem; color: var(--muted); line-height: 1.6; }
+  .why { margin-top: 1.8rem; max-width: 62ch; color: var(--muted); }
+
+  /* Teknologi */
+  .tech { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 2rem; }
+  .tech div { padding: 1rem 0; border-top: 1px solid var(--line); }
+  .tech b { display: block; color: var(--text); font-weight: 600; }
+  .tech small { display: block; margin-top: .2rem; font-size: .93rem; color: var(--muted); line-height: 1.6; }
+
+  /* Rencana */
+  .status { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .col { padding: 1.6rem; border-radius: var(--r); background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .col ul { margin-top: .9rem; list-style: none; }
+  .col li { position: relative; padding: .5rem 0 .5rem 1.1rem; font-size: .95rem; border-top: 1px solid var(--line); }
+  .col li::before { content: ""; position: absolute; left: 0; top: 1.05em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .col.next li::before { background: transparent; border: 1.5px solid var(--accent); }
+
+  /* Penutup */
+  .closing { margin-top: var(--gap); padding: var(--gap) 0; text-align: center; border-top: 1px solid var(--line); }
+  .closing .big { max-width: 18em; margin-inline: auto; font-family: var(--serif); font-weight: 500; color: var(--text); font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.15; letter-spacing: -.01em; }
+  .closing .thanks { margin: 1rem auto 0; max-width: 44ch; color: var(--muted); }
+  .contact { margin-top: 1.8rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
+  footer { border-top: 1px solid var(--line); padding: 1.4rem 0; color: var(--muted); font-size: .9rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem 2rem; }
+  .flinks { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; }
+  .flinks a:hover { color: var(--ink); }
+
+  .js .rv { opacity: 0; transition: opacity .7s ease; }
+  .js .rv.in { opacity: 1; }
+
+  @media (max-width: 900px) {
+    .hero .wrap, .about { grid-template-columns: 1fr; }
+    .photo-wrap { width: min(70%, 280px); }
+    .dots { right: -20px; }
+  }
+  @media (max-width: 680px) {
+    :root { --gap: 4.5rem; }
+    .feats, .flow, .tech, .status { grid-template-columns: 1fr; }
+    .pill-nav a { padding: .4rem .6rem; font-size: .9rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+    .js .rv { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Kembali ke portofolio">Naufal</a>
+    <nav class="pill-nav" aria-label="Navigasi utama">
+      <a href="#ringkasan">Ringkasan</a>
+      <a href="#fitur">Fitur</a>
+      <a href="#cara-kerja">Cara kerja</a>
+      <a href="#rencana">Rencana</a>
+    </nav>
+  </div>
+</header>
+
+<main id="atas">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Studi proyek</p>
+        <h1 aria-label="Jadwal Sekolah Pro"><span aria-hidden="true">Jadwal</span><span aria-hidden="true"><em>Sekolah Pro</em></span></h1>
+        <p class="sub">Aplikasi web jadwal pelajaran untuk kelas XI TKJ 2, dibahas dari fitur sampai cara kerjanya.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://l63666365-ops.github.io/Skuy/" target="_blank" rel="noopener">Buka aplikasi</a>
+          <a class="btn ghost" href="#ringkasan">Baca pembahasan</a>
+        </div>
+      </div>
+      <div class="photo-wrap">
+        <span class="glow" aria-hidden="true"></span>
+        <span class="dots" aria-hidden="true"></span>
+        <div class="phone">
+          <img class="shot" src="https://raw.githubusercontent.com/l63666365-ops/Foto/refs/heads/main/download%20(1).jpg" alt="Tampilan aplikasi Jadwal Sekolah Pro: jadwal pelajaran TKJ 2 dengan kartu mata pelajaran, penanda tugas, dan menu Jadwal, Tugas, Profil" width="560" height="1254">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="wrap"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Google Sheets</span><span>Apps Script</span><span>GitHub Pages</span></div>
+  </div>
+
+  <section class="sec" id="ringkasan">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="kicker">Ringkasan</p>
+        <h2>Tentang proyek ini</h2>
+        <p>Apa itu Jadwal Sekolah Pro, untuk siapa, dan siapa yang membuatnya.</p>
+      </div>
+
+      <div class="about rv">
+        <div>
+          <p class="lead">Semua yang perlu dilihat siswa untuk hari sekolah, dalam satu halaman.</p>
+          <p class="rest">Jadwal Sekolah Pro menampilkan mata pelajaran, jam, ruang, dan nama guru kelas XI TKJ 2, lalu menambahkan kalender akademik sekolah di atasnya. Proyek ini saya rancang dan kembangkan sendiri sebagai proyek pribadi.</p>
+        </div>
+        <aside class="data">
+          <h3>Info proyek</h3>
+          <dl>
+            <div><dt>Peran</dt><dd>Perancang dan pengembang</dd></div>
+            <div><dt>Pengguna</dt><dd>Kelas XI TKJ 2</dd></div>
+            <div><dt>Platform</dt><dd>Web, Android sedang disiapkan</dd></div>
+            <div><dt>Jenis</dt><dd>Proyek pribadi</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="fitur">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="kicker">Fitur</p>
+        <h2>Fitur yang ada di dalamnya</h2>
+        <p>Lima hal utama yang bisa dilihat dan dipakai di aplikasi.</p>
+      </div>
+
+      <div class="feats rv">
+        <article class="feat wide">
+          <h3>Jadwal pelajaran</h3>
+          <p>Setiap pelajaran tampil sebagai kartu yang berisi mata pelajaran, jam, ruang, dan nama guru, sehingga siswa tidak perlu membuka banyak tempat untuk tahu pelajaran hari itu.</p>
+          <div class="chips"><span>Mata pelajaran</span><span>Jam</span><span>Ruang</span><span>Nama guru</span></div>
+        </article>
+        <article class="feat">
+          <h3>Menu Jadwal, Tugas, Profil</h3>
+          <p>Navigasi di bagian bawah memisahkan jadwal, tugas, dan profil, dan kartu pelajaran punya penanda tugas.</p>
+        </article>
+        <article class="feat">
+          <h3>Banner kalender akademik</h3>
+          <p>Agenda penting sekolah muncul sebagai banner supaya tidak terlewat.</p>
+          <div class="chips"><span>PTS</span><span>PAS</span><span>ASAJ</span><span>Libur</span><span>Raport</span><span>Upacara bendera</span></div>
+        </article>
+        <article class="feat">
+          <h3>Tampilan maskot</h3>
+          <p>Saat hari ujian, libur, atau tanggal merah, aplikasi menampilkan maskot sebagai penanda bahwa hari itu bukan hari belajar biasa.</p>
+        </article>
+        <article class="feat">
+          <h3>Jadwal otomatis</h3>
+          <p>Data jadwal diambil dari Google Sheets, jadi memperbaruinya cukup dengan mengubah spreadsheet tanpa menyentuh kode.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="cara-kerja">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="kicker">Cara kerja</p>
+        <h2>Dari spreadsheet sampai layar HP</h2>
+        <p>Tiga tahap yang membuat jadwal selalu mengikuti data terbaru.</p>
+      </div>
+
+      <ol class="flow rv" aria-label="Alur data aplikasi">
+        <li><b>Jadwal ditulis di Google Sheets</b><small>Mata pelajaran, jam, ruang, dan guru disimpan sebagai data di spreadsheet.</small></li>
+        <li><b>Apps Script meneruskan data</b><small>Google Apps Script mengambil isi spreadsheet dan menyediakannya untuk halaman web.</small></li>
+        <li><b>Halaman web menampilkan</b><small>Aplikasi yang di-hosting di GitHub Pages membaca data itu dan menampilkannya sebagai kartu jadwal.</small></li>
+      </ol>
+      <p class="why rv">Dengan pola ini, perubahan jadwal cukup dilakukan di spreadsheet. Kode aplikasi tidak perlu diubah dan diunggah ulang setiap kali jadwal berganti.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="teknologi">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="kicker">Teknologi</p>
+        <h2>Alat yang dipakai</h2>
+        <p>Enam teknologi, masing-masing dengan tugasnya sendiri.</p>
+      </div>
+
+      <div class="tech rv">
+        <div><b>HTML</b><small>Kerangka halaman dan isi aplikasi.</small></div>
+        <div><b>CSS</b><small>Tampilan, warna, dan tata letak yang rapi di HP.</small></div>
+        <div><b>JavaScript</b><small>Logika aplikasi dan penampil data jadwal.</small></div>
+        <div><b>Google Sheets</b><small>Tempat jadwal ditulis dan diperbarui.</small></div>
+        <div><b>Apps Script</b><small>Penghubung antara spreadsheet dan halaman web.</small></div>
+        <div><b>GitHub Pages</b><small>Tempat aplikasi di-hosting dan bisa dibuka online.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="rencana">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="kicker">Rencana</p>
+        <h2>Sudah jalan dan yang berikutnya</h2>
+        <p>Posisi proyek saat ini.</p>
+      </div>
+
+      <div class="status rv">
+        <article class="col">
+          <h3>Sudah berjalan</h3>
+          <ul><li>Versi web sudah online lewat GitHub Pages</li><li>Jadwal otomatis dari Google Sheets</li><li>Banner kalender akademik</li><li>Tampilan maskot untuk hari ujian dan libur</li></ul>
+        </article>
+        <article class="col next">
+          <h3>Sedang disiapkan</h3>
+          <ul><li>Versi aplikasi Android</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" id="kontak">
+    <div class="wrap rv">
+      <p class="kicker">Coba sendiri</p>
+      <p class="big">Jadwal rapi, hari sekolah jadi <em>lebih mudah.</em></p>
+      <p class="thanks">Buka aplikasinya langsung di HP. Kalau ada saran atau pertanyaan, hubungi saya lewat WhatsApp.</p>
+      <div class="contact">
+        <a class="btn primary" href="https://l63666365-ops.github.io/Skuy/" target="_blank" rel="noopener">Buka aplikasi</a>
+        <a class="btn ghost" href="https://wa.me/6287831621020" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost" href="index.html">Kembali ke portofolio</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Naufal Rusyda, XI TKJ 2, SMK Negeri 2 Sragen</span>
+    <span class="flinks"><a href="index.html">Portofolio</a><a href="https://wa.me/6287831621020" target="_blank" rel="noopener">WhatsApp</a><span>2026</span></span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.rv');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); }
+    else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: 0.1 });
+      els.forEach(function (e) { io.observe(e); });
+    }
+    if ('IntersectionObserver' in window) {
+      var links = {};
+      document.querySelectorAll('.pill-nav a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+      var spy = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting || !links[en.target.id]) return;
+          Object.keys(links).forEach(function (k) { links[k].classList.remove('active'); links[k].removeAttribute('aria-current'); });
+          links[en.target.id].classList.add('active');
+          links[en.target.id].setAttribute('aria-current', 'true');
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      Object.keys(links).forEach(function (id) { var el = document.getElementById(id); if (el) spy.observe(el); });
+    }
+    document.querySelectorAll('img').forEach(function (img) {
+      function hide() { img.style.display = 'none'; }
+      img.addEventListener('error', hide);
+      if (img.complete && img.naturalWidth === 0) hide();
+    });
+  })();
+</script>
+</body>
+</html>
